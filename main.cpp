@@ -148,8 +148,9 @@ int main(int argc, char const *argv[])
 		return 1;
 	}
 
+    uint8_t chipID = u8Buff[4];
 	/* Check MCU ID */
-	if ((u8Buff[4] != 0x52) || (u8Buff[5] != 0x11)) {
+	if (((chipID != 0x52) && (chipID != 0x51)) || (u8Buff[5] != 0x11)) {
 		fprintf(stderr, "Not supported chip: %02X, %02x\n", u8Buff[4], u8Buff[5]);
 		return 1;
 	}
@@ -180,7 +181,7 @@ int main(int argc, char const *argv[])
 	for (i = 0; i < 8; ++i) {
 		u8Mask[i] = u8Sum;
 	}
-	u8Mask[7] += 0x52;
+	u8Mask[7] += chipID;
 	printf("XOR Mask: ");
 	for (i = 0; i < 8; ++i) {
 		printf("%02X ", u8Mask[i]);
