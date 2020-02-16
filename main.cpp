@@ -107,7 +107,7 @@ int main(int argc, char const *argv[])
 	int rc;
 	KT_BinIO ktBin;
 
-	printf("CH552 Programmer\n");
+	printf("CH55x Programmer\n");
 	if (argc != 2) {
 		printf("usage: ch552isptool flash_file.bin\n");
         return 1;
@@ -150,8 +150,16 @@ int main(int argc, char const *argv[])
 
     uint8_t chipID = u8Buff[4];
 	/* Check MCU ID */
-	if (((chipID != 0x52) && (chipID != 0x51)) || (u8Buff[5] != 0x11)) {
-		fprintf(stderr, "Not supported chip: %02X, %02x\n", u8Buff[4], u8Buff[5]);
+    switch (chipID) {
+        case 0x51:
+        case 0x52:
+            break;
+        default:
+		    fprintf(stderr, "Not supported chip: %02X, %02x\n", chipID, u8Buff[5]);
+		    return 1;
+    }
+	if (u8Buff[5] != 0x11) {
+		fprintf(stderr, "Not supported chip: %02X, %02x\n", chipID, u8Buff[5]);
 		return 1;
 	}
 	
