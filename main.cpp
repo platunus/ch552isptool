@@ -177,7 +177,9 @@ int main(int argc, char const *argv[])
 	printf("Bootloader: %d.%d.%d\n", u8Buff[19], u8Buff[20], u8Buff[21]);
 	printf("ID: %02X %02X %02X %02X\n", u8Buff[22], u8Buff[23], u8Buff[24], u8Buff[25]);
 	/* check bootloader version */
-	if ((u8Buff[19] != 0x02) || (u8Buff[20] != 0x03) || (u8Buff[21] != 0x01)) {
+	if ((u8Buff[19] != 0x02) || (u8Buff[20] < 0x03) ||
+        ((u8Buff[20] == 0x03) && (u8Buff[21] != 0x01)) ||
+        ((u8Buff[20] == 0x04) && (u8Buff[21] != 0x00))) {
 		printf("Not support\n");
 		return 1;
 	}
